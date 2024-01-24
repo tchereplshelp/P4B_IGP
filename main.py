@@ -18,4 +18,21 @@ with fp.open(mode="r", encoding="UTF-8", newline="") as file:
         #and append to the deliveryRecords list
         cash_on_hand_sgd.append([row[0],row[1],row[2],row[3]])   
 
-print(deliveryRecords)
+
+
+
+
+
+
+
+# Write the calculated info to a Summary_report.txt file.
+from pathlib import Path
+
+# File path for the main solution file 
+filepath = Path.cwd()/'summary_report.txt'
+with open (filepath, "w") as file:
+    file.write("[HIGHEST OVERHEAD]:\n")
+    file.write("[CASH SURPLUS]:\n")
+    file.write("[HIGHEST CASH SURPLUS]:\n")
+    file.write("[NET PROFIT SURPLUS]:\n")
+    file.write("[HIGHEST NET PROFIT SURPLUS]:\n")

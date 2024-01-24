@@ -11,18 +11,12 @@ with fp.open(mode="r", encoding="UTF-8", newline="") as file:
     reader = csv.reader(file)
     next(reader)  # skip header
 
-    # create an empty list for delivery record
+    # create an empty list for profit_and_loss record
     profit_and_loss_sgd = []
-    # append cash on hand record into the cash_on_hand_sgd list
+    # append profit and loss record into the profit_and_loss_sgd list
     for row in reader:
-        # get the driver id, sales, distance, and event type for each record
-        # and append to the deliveryRecords list
-        profit_and_loss_sgd.append([row[0], row[1], row[3], row[4]])
-
-    # append cash on hand record into the cash_on_hand_sgd list
-    for row in reader:
-        # get the driver id, sales, distance, and event type for each record
-        # and append to the deliveryRecords list
+        # get the "Day","Sales","Trading Profit","Operating Expense","Net Profit" for each record
+        # and append to the profit and loss list
         profit_and_loss_sgd.append([row[0], row[1], row[3], row[4]])
 
 
@@ -81,3 +75,5 @@ net_profit_diff = calc_diff_in_net_profit(profit_and_loss_sgd)
 
 # Analyze net profit trends
 analyze_net_profit(net_profit_diff)
+
+
