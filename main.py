@@ -216,7 +216,7 @@ highest_overhead_percentage = (highest_overhead_amount / sum([amount for _, amou
 # Write the calculated info to a Summary_report.txt file.
 summary_report_path = Path.cwd() / 'summary_report.txt'
 with open(summary_report_path, "w") as file:
-    file.write(f"[HIGHEST OVERHEAD] SALARY EXPENSE: {highest_overhead_percentage:.2f}%\n")
+    file.write(f"[HIGHEST OVERHEAD] {highest_overhead_category.upper()}: {highest_overhead_percentage:.2f}%\n")
     file.write("[CASH DEFICIT] CASH ON EACH DAY IS LOWER THAN THE PREVIOUS DAY\n")
     file.write(f"[HIGHEST CASH DEFICIT] DAY: {highest_cash_deficit_day}, AMOUNT: {highest_cash_deficit_amount}\n")
     file.write("[NET PROFIT DEFICIT] NET PROFIT ON EACH DAY IS LOWER THAN PREVIOUS DAY\n")
