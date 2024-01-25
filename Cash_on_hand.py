@@ -12,13 +12,13 @@ with fp.open(mode="r", encoding="UTF-8", newline="") as file:
     next(reader)  # skip header
 
 # create an empty list for cash_on_hand record
-    cash_on_hand_sgd=[] 
+    cash_on_hand_data=[] 
 
     # append cash on hand record into the cash_on_hand_sgd list
     for row in reader:
         #get the "Day","Cash On Hand" for each record
-        #and append to the cash_on_hand_sgd list
-        cash_on_hand_sgd.append([row[0],row[1]])   
+        #and append to the cash_on_hand_data list
+        cash_on_hand_data.append([row[0],row[1]])   
 
 def calc_diff_in_cash_on_hand(cash_on_hand_data):
     """
@@ -32,10 +32,10 @@ def calc_diff_in_cash_on_hand(cash_on_hand_data):
     """
     cash_on_hand_diff = []
 
-    for i in range(1, len(cash_on_hand_data)):
+    for day in range(1, len(cash_on_hand_data)):
         # Extract relevant information for the current and previous days
-        current_day, current_cash_on_hand = int(cash_on_hand_data[i][0]), float(cash_on_hand_data[i][1])
-        previous_day, previous_cash_on_hand = int(cash_on_hand_data[i - 1][0]), float(cash_on_hand_data[i - 1][1])
+        current_day, current_cash_on_hand = int(cash_on_hand_data[day][0]), float(cash_on_hand_data[day][1])
+        previous_day, previous_cash_on_hand = int(cash_on_hand_data[day - 1][0]), float(cash_on_hand_data[day - 1][1])
 
         # Calculate the difference in Cash-on-Hand
         diff_in_cash_on_hand = current_cash_on_hand - previous_cash_on_hand
@@ -57,11 +57,11 @@ def analyze_cash_on_hand(cash_on_hand_diff):
     deficit_days = [(day, diff) for day, diff in cash_on_hand_diff if diff < 0]
 
     if deficit_days:
-        top_deficits = sorted(deficit_days, key=get_second_element)[:3]
+    
         print("Days with deficit in Cash-on-Hand:")
         for day, deficit_amount in deficit_days:
             print(f"Day {day}: {deficit_amount}")
-
+        top_deficits = sorted(deficit_days, key=get_second_element)[:3] #list down top 3
         print("\nTop 3 highest deficit amounts in Cash-on-Hand:")
         for day, deficit_amount in top_deficits:
             print(f"Day {day}: {deficit_amount}")
@@ -70,7 +70,7 @@ def get_second_element(item):
     return item[1]
 
 # Calculate the difference in Cash-on-Hand
-cash_on_hand_diff = calc_diff_in_cash_on_hand(cash_on_hand_sgd)
+cash_on_hand_diff = calc_diff_in_cash_on_hand(cash_on_hand_data)
 
 # Analyze Cash-on-Hand trends
 analyze_cash_on_hand(cash_on_hand_diff)

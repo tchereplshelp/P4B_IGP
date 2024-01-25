@@ -1,3 +1,4 @@
+#Overheads 
 from pathlib import Path
 import csv
 
@@ -12,13 +13,13 @@ with fp.open(mode="r", encoding="UTF-8", newline="") as file:
     next(reader)  # skip header
 
 # create an empty list for overheads record
-    overheads=[] 
+    overheads_data=[] 
 
     # append cash on hand record into the overheads list
     for row in reader:
         #get the "Category", "Overheads" for each record
         #and append to the overheads list
-        overheads.append([row[0],float(row[1])])   
+        overheads_data.append([row[0],float(row[1])])   
 
 # Find the highest overhead category
 def get_overhead_amount(item):
@@ -38,12 +39,12 @@ def find_highest_overhead_category(overheads_data):
     return max_overhead_category, max_overhead_amount
 
 # Call the function to find the highest overhead category
-highest_overhead_category, highest_overhead_amount = find_highest_overhead_category(overheads)
+highest_overhead_category, highest_overhead_amount = find_highest_overhead_category(overheads_data)
 
 # Print the result
 print(f"The highest overhead category is '{highest_overhead_category}' with an amount of {highest_overhead_amount}.")
 
-
+#Profit and Loss Calculations
 from pathlib import Path
 import csv
 
@@ -58,12 +59,12 @@ with fp.open(mode="r", encoding="UTF-8", newline="") as file:
     next(reader)  # skip header
 
     # create an empty list for profit_and_loss record
-    profit_and_loss_sgd = []
+    profit_and_loss_data = []
     # append profit and loss record into the profit_and_loss_sgd list
     for row in reader:
         # get the "Day","Sales","Trading Profit","Operating Expense","Net Profit" for each record
         # and append to the profit and loss list
-        profit_and_loss_sgd.append([row[0], row[1], row[3], row[4]])
+        profit_and_loss_data.append([row[0], row[1], row[3], row[4]])
 
 
 def calc_diff_in_net_profit(profit_and_loss_data):
@@ -103,13 +104,13 @@ def analyze_net_profit(net_profit_diff):
 
     if deficit_days:
         top_deficits = sorted(deficit_days, key=get_second_element)[:3]
-        print("Days with deficit:")
+        print("Days with deficit (profit and loss):")
         for day, deficit_amount in deficit_days:
             print(f"Day {day}: {deficit_amount}")
 
-        print("\nTop 3 highest deficit amounts:")
-        for days, deficit_amount_top in top_deficits:
-            print(f"Day {days}: {deficit_amount_top}")
+        print("\nTop 3 highest deficit amounts in profit and loss:")
+        for day, deficit_amount in top_deficits:
+            print(f"Day {day}: {deficit_amount}")
 
 
 def get_second_element(item):
@@ -117,11 +118,12 @@ def get_second_element(item):
 
 
 # Calculate the difference in net profit
-net_profit_diff = calc_diff_in_net_profit(profit_and_loss_sgd)
+net_profit_diff = calc_diff_in_net_profit(profit_and_loss_data)
 
 # Analyze net profit trends
 analyze_net_profit(net_profit_diff)
 
+#Cash on hand Calculation
 from pathlib import Path
 import csv
 
@@ -211,7 +213,7 @@ highest_cash_deficit_day, highest_cash_deficit_amount = min(cash_on_hand_diff, k
 highest_profit_deficit_day, highest_profit_deficit_amount = min(net_profit_diff, key=get_second_element)
 
 # Calculate the highest overhead percentage
-highest_overhead_percentage = (highest_overhead_amount / sum([amount for _, amount in overheads])) * 100
+highest_overhead_percentage = (highest_overhead_amount / sum([amount for _, amount in overheads_data])) * 100
 
 # Write the calculated info to a Summary_report.txt file.
 summary_report_path = Path.cwd() / 'summary_report.txt'

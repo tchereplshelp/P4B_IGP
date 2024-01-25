@@ -12,13 +12,13 @@ with fp.open(mode="r", encoding="UTF-8", newline="") as file:
     next(reader)  # skip header
 
 # create an empty list for overheads record
-    overheads=[] 
+    overheads_data=[] 
 
     # append cash on hand record into the overheads list
     for row in reader:
         #get the "Category", "Overheads" for each record
         #and append to the overheads list
-        overheads.append([row[0],float(row[1])])   
+        overheads_data.append([row[0],float(row[1])])   
 
 # Find the highest overhead category
 def get_overhead_amount(item):
@@ -38,7 +38,7 @@ def find_highest_overhead_category(overheads_data):
     return max_overhead_category, max_overhead_amount
 
 # Call the function to find the highest overhead category
-highest_overhead_category, highest_overhead_amount = find_highest_overhead_category(overheads)
+highest_overhead_category, highest_overhead_amount = find_highest_overhead_category(overheads_data)
 
 # Print the result
 print(f"The highest overhead category is '{highest_overhead_category}' with an amount of {highest_overhead_amount}.")

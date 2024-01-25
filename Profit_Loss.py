@@ -12,12 +12,12 @@ with fp.open(mode="r", encoding="UTF-8", newline="") as file:
     next(reader)  # skip header
 
     # create an empty list for profit_and_loss record
-    profit_and_loss_sgd = []
+    profit_and_loss_data = []
     # append profit and loss record into the profit_and_loss_sgd list
     for row in reader:
         # get the "Day","Sales","Trading Profit","Operating Expense","Net Profit" for each record
         # and append to the profit and loss list
-        profit_and_loss_sgd.append([row[0], row[1], row[3], row[4]])
+        profit_and_loss_data.append([row[0], row[1], row[3], row[4]])
 
 
 def calc_diff_in_net_profit(profit_and_loss_data):
@@ -57,11 +57,11 @@ def analyze_net_profit(net_profit_diff):
 
     if deficit_days:
         top_deficits = sorted(deficit_days, key=get_second_element)[:3]
-        print("Days with deficit:")
+        print("Days with deficit (profit and loss):")
         for day, deficit_amount in deficit_days:
             print(f"Day {day}: {deficit_amount}")
 
-        print("\nTop 3 highest deficit amounts:")
+        print("\nTop 3 highest deficit amounts in profit and loss:")
         for day, deficit_amount in top_deficits:
             print(f"Day {day}: {deficit_amount}")
 
@@ -71,7 +71,7 @@ def get_second_element(item):
 
 
 # Calculate the difference in net profit
-net_profit_diff = calc_diff_in_net_profit(profit_and_loss_sgd)
+net_profit_diff = calc_diff_in_net_profit(profit_and_loss_data)
 
 # Analyze net profit trends
 analyze_net_profit(net_profit_diff)
