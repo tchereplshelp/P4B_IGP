@@ -6,7 +6,7 @@ from pathlib import Path
 summary_report_path = Path.cwd() / "summary_report.txt"
 with summary_report_path.open(mode="w", encoding="UTF-8") as summary_report:
     summary_report.write(f"[HIGHEST OVERHEAD]{highest_overhead_category.upper()}: {highest_overhead_amount}%\n")
-    summary_report.write("Days with deficit in Cash-on-Hand:\n")
+    summary_report.write("Days with deficit in Cash-on-Hand:\n".upper())
     for day_cash, deficit_amount_cash in analyze_cash_on_hand(cash_on_hand_diff):
         summary_report.write(f"[CASH DEFICIT] DAY {day_cash}, AMOUNT: SGD {deficit_amount_cash}\n")
     summary_report.write("Top 3 highest deficit amounts in Cash-on-Hand:\n".upper())
