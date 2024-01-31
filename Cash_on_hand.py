@@ -11,14 +11,14 @@ with fp.open(mode="r", encoding="UTF-8", newline="") as file:
     reader = csv.reader(file)
     next(reader)  # skip header
 
-# create an empty list for cash_on_hand record
-    cash_on_hand_data=[] 
+    # create an empty list for cash_on_hand record
+    cash_on_hand_data = []
 
     # append cash on hand record into the cash_on_hand_sgd list
     for row in reader:
-        #get the "Day","Cash On Hand" for each record
-        #and append to the cash_on_hand_data list
-        cash_on_hand_data.append([row[0],row[1]])   
+        # get the "Day","Cash On Hand" for each record
+        # and append to the cash_on_hand_data list
+        cash_on_hand_data.append([row[0], row[1]])
 
 def calc_diff_in_cash_on_hand(cash_on_hand_data):
     """
@@ -44,33 +44,72 @@ def calc_diff_in_cash_on_hand(cash_on_hand_data):
         cash_on_hand_diff.append((current_day, diff_in_cash_on_hand))
 
     return cash_on_hand_diff
+cash_on_hand_diff = calc_diff_in_cash_on_hand(cash_on_hand_data)
+
+
 
 def analyze_cash_on_hand(cash_on_hand_diff):
     """
-    Analyze the Cash-on-Hand trends and identify highest increments, decrements, and deficits.
+    Analyze the Cash-on-Hand trends and identify days with deficits.
 
     Parameters:
     - cash_on_hand_diff: List of tuples containing day and the difference in Cash-on-Hand.
+
+    Returns:
+    - List of tuples containing day and deficit amount for days with deficits.
     """
+    deficit_days_cash = [(day, diff) for day, diff in cash_on_hand_diff if diff < 0]
+    return deficit_days_cash
+        
+        
+def analyze_top_deficit_cash(deficit_days_cash):  
+    """
+    Identify the top 3 highest deficit amounts in Cash-on-Hand.
 
+    Parameters:
+    - deficit_days_cash: List of tuples containing day and deficit amount for days with deficits.
 
-    deficit_days = [(day, diff) for day, diff in cash_on_hand_diff if diff < 0]
+    Returns:
+    - List of tuples containing position, day, and deficit amount for the top 3 deficits.
+    """
+    top_deficits_cash = sorted(deficit_days_cash, key=get_second_element)[:3]
+    #the key parameter is an optional argument that specifies a function of one 
+    #argument that is used to extract a comparison key from each element in the iterable being sorted
+    #The get_second_element function is a helper function that takes a tuple item as a parameter.
+    #It returns the second element of the tuple (item[1]).
+    #This function is used as the key function in the sorted call to sort tuples 
+    #based on their second element (deficit amounts in Cash-on-Hand) in ascending order.
+    #This helps in identifying the top 3 highest deficit amounts in Cash-on-Hand.
+    cash_result = []
+    for i, (days_cash, deficit_amount_cash) in enumerate(top_deficits_cash, start=1):
+        cash_result.append((i, days_cash, deficit_amount_cash))
+    return cash_result
 
-    if deficit_days:
-    
-        print("Days with deficit in Cash-on-Hand:")
-        for day, deficit_amount in deficit_days:
-            print(f"Day {day}: {deficit_amount}")
-        top_deficits = sorted(deficit_days, key=get_second_element)[:3] #list down top 3
-        print("\nTop 3 highest deficit amounts in Cash-on-Hand:")
-        for day, deficit_amount in top_deficits:
-            print(f"Day {day}: {deficit_amount}")
 
 def get_second_element(item):
+    """
+    Helper function to get the second element of a tuple.
+
+    Parameters:
+    - item: A tuple.
+
+    Returns:
+    - The second element of the tuple.
+    """
     return item[1]
 
-# Calculate the difference in Cash-on-Hand
-cash_on_hand_diff = calc_diff_in_cash_on_hand(cash_on_hand_data)
+ordinal_suffix = {1: "ST", 2: "ND", 3: "RD"}
 
-# Analyze Cash-on-Hand trends
-analyze_cash_on_hand(cash_on_hand_diff)
+# Print days with deficit in Cash-on-Hand
+print("Days with deficit in Cash-on-Hand:")
+for day_cash, deficit_amount_cash in analyze_cash_on_hand(cash_on_hand_diff):
+    print(f"[CASH DEFICIT] DAY {day_cash}, AMOUNT: SGD {deficit_amount_cash}")
+
+# Print top 3 highest deficit amounts in Cash-on-Hand
+print("\nTop 3 highest deficit amounts in Cash-on-Hand:")
+for i, cash_data in enumerate(analyze_top_deficit_cash(cash_on_hand_diff), start=1):
+    # Get the appropriate ordinal suffix based on the current position using the ordinal_suffix dictionary
+    suffix = ordinal_suffix.get(i, "th")
+
+    # Unpack the tuple and print information about each deficit
+    print(f"[{i}{suffix} HIGHEST CASH DEFICIT] DAY: {cash_data[1]}, AMOUNT: SGD {cash_data[2]}")
