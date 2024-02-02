@@ -19,12 +19,12 @@ with summary_report_path.open(mode="w", encoding="UTF-8") as summary_report:
         # Write the trend information for Cash-on-Hand
         summary_report.write("[CASH SURPLUS] CASH ON EACH DAY IS HIGHER THAN THE PREVIOUS DAY")
         for i, cash_data in enumerate(analyze_top_deficitorsurplus_cash(cash_on_hand_diff), start=1):
-            summary_report.write(f"[{i}{ordinal_suffix.get(i, 'th')} HIGHEST CASH SURPLUS] DAY: {cash_data[1]}, AMOUNT: SGD {cash_data[2]}")
+            summary_report.write(f"[HIGHEST CASH SURPLUS] DAY: {cash_data[1]}, AMOUNT: SGD {cash_data[2]}")
         
         # Write the trend information for Net Profit
         summary_report.write("[NET PROFIT SURPLUS] CASH ON EACH DAY IS HIGHER THAN THE PREVIOUS DAY")
         for i, nets_data in enumerate(analyze_top_deficitorsurplus_nets(net_profit_diff), start=1):
-            summary_report.write(f"[{i}{ordinal_suffix.get(i, 'th')} HIGHEST NET PROFIT SURPLUS] DAY: {nets_data[1]}, AMOUNT: SGD {nets_data[2]}")
+            summary_report.write(f"[HIGHEST NET PROFIT SURPLUS] DAY: {nets_data[1]}, AMOUNT: SGD {nets_data[2]}")
     
     # Check if there is a decreasing trend
     elif decreasing:
@@ -34,12 +34,12 @@ with summary_report_path.open(mode="w", encoding="UTF-8") as summary_report:
         # Write the trend information for Cash-on-Hand
         summary_report.write("[CASH DEFICIT] CASH ON EACH DAY IS LOWER THAN THE PREVIOUS DAY")
         for i, cash_data in enumerate(analyze_top_deficitorsurplus_cash(cash_on_hand_diff), start=1):
-            summary_report.write(f"[{i}{ordinal_suffix.get(i, 'th')} HIGHEST CASH DEFICIT] DAY: {cash_data[1]}, AMOUNT: SGD {cash_data[2]}")
+            summary_report.write(f"[HIGHEST CASH DEFICIT] DAY: {cash_data[1]}, AMOUNT: SGD {cash_data[2]}")
         
         # Write the trend information for Net Profit
         summary_report.write("[NET PROFIT DEFICIT] CASH ON EACH DAY IS LOWER THAN THE PREVIOUS DAY")
         for i, nets_data in enumerate(analyze_top_deficitorsurplus_nets(net_profit_diff), start=1):
-            summary_report.write(f"[{i}{ordinal_suffix.get(i, 'th')} HIGHEST NET PROFIT DEFICIT] DAY: {nets_data[1]}, AMOUNT: SGD {nets_data[2]}")
+            summary_report.write(f"[HIGHEST NET PROFIT DEFICIT] DAY: {nets_data[1]}, AMOUNT: SGD {nets_data[2]}")
     
     # Check if there is a fluctuating trend
     elif fluctuating:
