@@ -46,6 +46,10 @@ def calc_diff_in_net_profit(profit_and_loss_data):
     return net_profit_diff
 
 net_profit_diff = calc_diff_in_net_profit(profit_and_loss_data)
+# Check the trend of cash on hand
+increasing = all(diff >= 0 for day, diff in net_profit_diff)
+decreasing = all(diff <= 0 for day, diff in net_profit_diff)
+fluctuating = not increasing and not decreasing
 
 def analyze_net_profit(net_profit_diff):
     """
@@ -54,31 +58,41 @@ def analyze_net_profit(net_profit_diff):
     Parameters:
     - net_profit_diff: List of tuples containing day and the difference in net profit.
     """
-    # Create a list of tuples containing days and their corresponding deficit amounts
-    deficit_days_net = [(day, diff) for day, diff in net_profit_diff if diff < 0]
-    return deficit_days_net
+    # Create a list of tuples containing days and their corresponding amounts
+    if increasing:
+        result_net = [(day, diff) for day, diff in net_profit_diff if diff > 0]
+        return result_net
+    elif decreasing:
+        result_net = [(day, diff) for day, diff in net_profit_diff if diff < 0]
+        return result_net
+    elif fluctuating:
+        result_net = [(day, diff) for day, diff in net_profit_diff if diff < 0]
+        return result_net
 
-def analyze_top_deficit_nets(deficit_days_net):
+def analyze_top_deficitorsurplus_nets(result_net):
     """
-    Identify the top 3 highest deficit amounts in net profit.
+    Identify the top 1 highest deficit amount in net profit.
 
     Parameters:
     - deficit_days_net: List of tuples containing day and deficit amount for days with deficits.
 
     Returns:
-    - List of tuples containing position, day, and deficit amount for the top 3 deficits.
+    - List of tuples containing position, day, and deficit amount for the top deficit.
     """
+    if increasing or decreasing:
+        top_analysis_net = sorted(result_net, key=get_second_element)[:1]
     # Sort the deficit days based on deficit amounts (using the get_second_element function)
-    top_deficits_net = sorted(deficit_days_net, key=get_second_element)[:3]
+    elif fluctuating:
+        top_analysis_net = sorted(result_net, key=get_second_element)[:3]
         #The get_second_element function is a helper function that takes a tuple item as a parameter.
         #It returns the second element of the tuple (item[1]).
         #This function is used as the key function in the sorted call to sort tuples 
         #based on their second element (deficit amounts in profit and loss) in ascending order.
-        #This helps in identifying the top 3 highest deficit amounts in profit and loss.
-    # Create a list of tuples with position, day, and deficit amount for the top deficits
+        #This helps in identifying the top 1 highest deficit amount in profit and loss.
+    # Create a list of tuples with position, day, and deficit amount for the top deficit
     profit_result = []
-    for i, (days_net, deficit_amount_net) in enumerate(top_deficits_net, start=1):
-        profit_result.append((i, days_net, deficit_amount_net))
+    for i, (days_net, day_amount_net) in enumerate(top_analysis_net, start=1):
+        profit_result.append((i, days_net, day_amount_net))
     return profit_result
 
 def get_second_element(item):
@@ -93,18 +107,4 @@ def get_second_element(item):
     """
     return item[1]
 
-ordinal_suffix = {1: "ST", 2: "ND", 3: "RD"}
 
-# Print days with deficit in net profit
-print("Days with deficit (profit and loss):")
-for day_net, deficit_amount_net in analyze_net_profit(net_profit_diff):
-    print(f"[NET PROFIT DEFICIT] DAY: {day_net}, AMOUNT: SGD{deficit_amount_net}")
-
-# Print top 3 highest deficit amounts in net profit
-print("\nTop 3 highest deficit amounts in profit and loss:")
-for i, nets_data in enumerate(analyze_top_deficit_nets(net_profit_diff), start=1):
-    # Get the appropriate ordinal suffix based on the current position using the ordinal_suffix dictionary
-    suffix = ordinal_suffix.get(i, "th")
-
-    # Unpack the tuple and print information about each deficit
-    print(f"[{i}{suffix} HIGHEST NET PROFIT DEFICIT] DAY: {nets_data[1]}, AMOUNT: SGD {nets_data[2]}\n")

@@ -56,5 +56,4 @@ def find_highest_overhead_category(overheads_data):
 # Call the function to find the highest overhead category
 highest_overhead_category, highest_overhead_amount = find_highest_overhead_category(overheads_data)
 
-# Print the result
-print(f"[HIGHEST OVERHEAD]{highest_overhead_category.upper()}: {highest_overhead_amount}%")
+
